@@ -1,0 +1,53 @@
+﻿<Window x:Class="StockSimulatorApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" 
+        xmlns:viewModels="clr-namespace:StockSimulatorApp"
+        xmlns:local="clr-namespace:StockSimulatorApp"        
+        d:DataContext="{d:DesignInstance viewModels:StocksViewModel}"
+        Title="Stocks Dashboard" Height="156" Width="538" >
+    <Window.Resources>
+
+        <local:StockPriceChangeToColorConverter x:Key="StockPriceChangeToColorConverter"/>
+
+        <DataTemplate x:Key="NameTemplate">
+            <TextBlock Text="{Binding StockName}"                                         
+                       MouseLeftButtonUp="SelectedStock_Mouse">
+            </TextBlock>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="PriceTemplate">
+            <TextBlock Text="{Binding StockPrice, StringFormat=N2}"                  
+                       Background="{Binding StockPriceChangeStatus, Converter={StaticResource StockPriceChangeToColorConverter}}" 
+                       MouseLeftButtonUp="SelectedStock_Mouse">
+                
+            </TextBlock>
+        </DataTemplate>
+
+    </Window.Resources>
+
+    <Grid Margin="0,0,10,4" >
+                
+        <ListView ItemsSource="{Binding Stocks}" 
+                  SelectedItem="{Binding SelectedStock}"                  
+                  Height="100"
+                  Margin ="10,10,0,10">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Stock" 
+                                    CellTemplate="{StaticResource NameTemplate}"
+                                    Width="400" />
+                    
+                    <GridViewColumn Header="Price" 
+                                    CellTemplate="{StaticResource PriceTemplate}"
+                                    Width="100" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+     
+    </Grid>
+</Window>
+
